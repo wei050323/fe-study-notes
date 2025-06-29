@@ -449,10 +449,185 @@ box3{
 - 绝对定位和固定定位会脱离文档流
 - 设置定位后，可以用`left/right/top/bottom：200px`调整位置
 - 固定定位：（不随着页面滚动变化）
-	- 相对定位和绝对定位是**相对于具有定位的父级元素**进行的调整，如父元素不存在，继续向上逐级寻找，直到顶层文档
+- 相对定位和绝对定位是**相对于具有定位的父级元素**进行的调整，如父元素不存在，继续向上逐级寻找，直到顶层文档
+
 ## z-index堆叠顺序
 z-index值越大，越在上层
 ```
 z-index:1
 ```
 
+# border-radius圆角
+```
+border-radius:15px 50px 30px 5px;
+border-radius:100%;//圆形
+border-radius:50%;//圆形
+```
+- 四个值：左上角、右上角、右下角、左下角
+- 三个值：左上角、右上角和左下角、右下角
+- 两个值：左上角与右下角、右上角与左下角
+- 一个值：四个圆角值相同
+
+# box-shadow阴影
+```
+box-shadow:h-shadow v-shadow blur color;
+```
+
+| 值        | 描述                |
+| -------- | ----------------- |
+| h-shadow | 必选，水平阴影位置（正数向右偏移） |
+| v-shadow | 必选，垂直阴影位置（整数向下偏移） |
+| blur     | 可选，模糊距离           |
+| color    | 可选，阴影颜色           |
+
+# 动画
+1. 动画：使元素逐渐变化为另一个样式
+2. 用百分比规划变化发生时间，或用关键词from和to，等同于0%（开始）和100%（完成）
+## @keyframes创建动画
+```
+@keyframes name{
+	from|0%{
+		css样式
+	}
+	percent{
+		css样式
+	}
+	to|100%{
+		css样式
+	}
+}
+//name:动画命名
+//percent：百分比值，可以添加多个百分比值
+```
+## 动画执行animation
+```
+animation:name duration timing-function delay iteration-count direction;
+```
+
+| 值                    | 描述                                 |
+| -------------------- | ---------------------------------- |
+| name                 | 动画名                                |
+| duration             | 动画持续时间                             |
+| timing-function      | 动画效果的速率（如下）                        |
+| dalay                | 动画的开始时间                            |
+| iteration-count      | 动画循环次数，infinite为无限次循环              |
+| direction            | 设置动画播放的方向（如下）                      |
+| animation-play-state | 控制动画的播放状态：running表示播放，paused表示停止播放 |
+
+| timing-function值 | 描述     |
+| ---------------- | ------ |
+| ease             | 逐渐变慢   |
+| linear           | 匀速     |
+| ease-in          | 加速     |
+| ease-out         | 减速     |
+| ease-in-out      | 先加速再减速 |
+
+| direction值 | 描述                 |
+| ---------- | ------------------ |
+| normal     | 默认值，向前播放           |
+| alternate  | 第偶数次向前播放，第奇数次反方向播放 |
+
+```
+<div class="animation></div>
+
+.animation{
+	width:300px;
+	height:300px;
+	background-color:red;
+	animation:anima 5s linear 5s infinite;
+}
+.animation:hover{
+	animation-play-state:paused;
+}
+@keyframes anima{
+	0%{
+		background-color:red;
+	}
+	50%{
+		background-color:green;
+	}
+	100%{
+		background-color:blueviolet;
+	}
+}
+```
+
+# 媒体查询
+
+1. 媒体查询使页面再不同终端设备下达到不同效果
+2. 根据设备大小自动识别加载不同样式
+## 设置meta标签
+使用设备的宽度为视图宽度并禁止初始的缩放
+```
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+```
+- width=device-width:宽度等于当前设备的宽度
+- initial-scale：初始缩放比例（默认为1）
+- maximum-scale：允许用户缩放到的最大比例（默认为1）
+- user-scalable:用户是否可以手动缩放（默认设置为no）
+## 媒体查询语法
+```
+@media screen and （max-width:768px){
+	/*设备小于768px加载样式*/
+	body{
+		background-color:red;
+	}
+}
+@media screen and （max-width:992px) and (min-width:768px){
+	/*设备da于768px小于992px加载样式*/
+	body{
+		background-color:pink;
+	}
+}
+@media screen and （min-width:992px){
+	/*设备大于992px加载样式*/
+	body{
+		background-color:green;
+	}
+}
+```
+
+# CSS Sprite雪碧图/精灵图
+
+> [!NOTE] 
+> "管中窥豹"的感觉，镜头对准不同地方，展示不同小图
+> 
+
+1. 一种网页图片应用处理方式，将一个页面涉及到的所有零星图片都包含到一张大图中去
+2. 优点：
+	- 减少图片的字节
+	- 减少网页的http请求，提高页面性能
+3. 通过background-image引入背景图片，再通过background-position把背景图移动到需要的位置
+```
+<i class="icon1"></i>
+<i class="icon2"></i>
+
+.icon1{
+	display:block;
+	background-image:url(1.png);
+	background-position:-20px 0;
+	width:45px;
+	height:70px;
+}
+.icon2{
+	display:bolck;
+	background-image:url(1.png);
+	background-position:-93px -84px;
+	width:45px;
+	height:70px;
+}
+```
+# 字体图标
+ 1. 解决图标失真和图片占用资源加载慢的问题
+ 2. 轻量、灵活、兼容性
+## 使用字体图标
+1. 图标库如iconfont
+2. 选取图标
+3. 添加购物车
+4. 下载代码
+5. 选择`font-class`引用
+```
+<span class="iconfont icon-add-circle"></span>
+
+<link rel="stylesheet" href="./css/iconfont.css">
+```
