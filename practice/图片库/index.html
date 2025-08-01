@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="imaggallery.css" media="screen" />
+    <title>Image Gallery</title>
+  </head>
+  <body>
+    <h1>Snapshots</h1>
+    <ul>
+      <li>
+        <a
+          href="../img/img1.jpg"
+          onclick="showPic(this);return false;"
+          title="beijing"
+          >捕梦日记——北京场</a
+        >
+      </li>
+      <li>
+        <a
+          href="../img/img2.jpg"
+          onclick="showPic(this);return false;"
+          title="guangzhou"
+          >捕梦日记——广州场</a
+        >
+      </li>
+      <li>
+        <a
+          href="../img/img3.jpg"
+          onclick="showPic(this);return false;"
+          title="hangzhou"
+          >捕梦日记——杭州场</a
+        >
+      </li>
+    </ul>
+    <img id="placeholder" src="../img/img4.png" alt="Img Gallery" />
+    <p id="text">Choose an image.</p>
+    <script src="imggallery.js"></script>
+  </body>
+</html>
