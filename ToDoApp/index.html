@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>todolist</title>
+    <link rel="stylesheet" href="index.css" />
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.2.0/css/line.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <p class="heading">ToDo App</p>
+      <div class="textarea">
+        <input type="text" id="textbox" placeholder="Enter your thoughts···" />
+        <button class="addbtn">+</button>
+      </div>
+      <ul class="listbox"></ul>
+    </div>
+  </body>
+  <script>
+    const textBox = document.querySelector("#textbox");
+    const addBtn = document.querySelector(".addbtn");
+    const listBox = document.querySelector(".listbox");
+
+    textBox.addEventListener("keyup", () => {
+      if (textBox.value.length != 0) {
+        addBtn.classList.add("active");
+      } else {
+        addBtn.classList.remove("active");
+      }
+    });
+
+    addBtn.addEventListener(`click`, () => {
+      if (textBox.value.length != 0) {
+        createList();
+        addBtn.classList.remove("active");
+      }
+    });
+
+    function createList() {
+      var listItem = document.createElement("li");
+      listBox.appendChild(listItem);
+      listItem.innerHTML += `<span><label>
+            <input type="checkbox" id="check">
+            <span class="done"><i class="uil uil-check"></i></span>
+            <p>${textBox.value}</p>
+            </label></span><i class="uil uil-trash-alt"></i>`;
+      textBox.value = "";
+    }
+    listBox.addEventListener("click", (e) => {
+      if (e.target.matches(".uil-trash-alt")) {
+        e.target.parentElement.remove();
+      }
+    });
+  </script>
+</html>
