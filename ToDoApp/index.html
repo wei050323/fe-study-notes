@@ -12,48 +12,180 @@
   </head>
   <body>
     <div class="container">
-      <p class="heading">ToDo App</p>
+      <!--标题-->
+      <div class="header">
+        <h1>MyToDo List</h1>
+      </div>
+      <!--状态栏-->
+      <div class="status-bar">
+        <div class="tasks-left">
+          <span class="pending-count">0</span> tasks left
+        </div>
+        <button class="clear-all">Clear All</button>
+      </div>
+      <!--输入-->
       <div class="textarea">
-        <input type="text" id="textbox" placeholder="Enter your thoughts···" />
+        <input
+          type="text"
+          class="textbox"
+          placeholder="Enter your thoughts···"
+        />
         <button class="addbtn">+</button>
       </div>
+      <!--任务列表-->
       <ul class="listbox"></ul>
+      <!--空状态提示-->
+      <div class="empty">
+        <i class="uil uil-clipboard-notes"></i>
+        <p>No tasks yet.Add a new task to get started!</p>
+      </div>
     </div>
+    <script>
+      const textBox = document.querySelector(".textbox");
+      const addBtn = document.querySelector(".addbtn");
+      const listBox = document.querySelector(".listbox");
+      const pendingCount = document.querySelector(".pending-count");
+      const clearBtn = document.querySelector(".clear-all");
+      const emptyState = document.querySelector(".empty");
+
+      var count = 0;
+      var totalcount = 0;
+      updateEmptyState();
+
+      loadTaskFromLocalStorage();
+
+      //输入框事件
+      textBox.addEventListener("keyup", () => {
+        if (textBox.value.length != 0) {
+          addBtn.classList.add("active");
+        } else {
+          addBtn.classList.remove("active");
+        }
+      });
+      //回车键添加任务
+      textBox.addEventListener("keypress", (e) => {
+        if (e.key == "Enter" && textBox.value.length != 0) {
+          creatList();
+          addBtn.classList.remove("active");
+        }
+      });
+      //点击按钮添加任务
+      addBtn.addEventListener("click", () => {
+        if (textBox.value.length != 0) creatList();
+        addBtn.classList.remove("active");
+      });
+      //更新未完成任务计数
+      function updatePendingCount() {
+        pendingCount.innerHTML = count;
+      }
+      //更新空状态显示
+      function updateEmptyState() {
+        if (totalcount === 0) {
+          emptyState.style.display = "block";
+          listBox.style.display = "none";
+        } else {
+          emptyState.style.display = "none";
+          listBox.style.display = "block";
+        }
+      }
+      //创建任务
+      function creatList() {
+        const listItem = document.createElement("li");
+        listBox.appendChild(listItem);
+        listItem.innerHTML += `
+      <span><label>
+        <input type="checkbox" class="check">
+        <span class="done"><i class="uil uil-check"></i></span>
+        <p>${textBox.value}</p>
+        </span><i class="uil uil-trash-alt"></i>
+      `;
+        const checkBox = listItem.querySelector(".check");
+        checkBox.addEventListener("change", function () {
+          if (this.checked) {
+            count--;
+          } else {
+            count++;
+          }
+          updatePendingCount();
+          saveTaskTOLocalStorage();
+        });
+
+        count++;
+        totalcount++;
+        textBox.value = "";
+        updatePendingCount();
+        updateEmptyState();
+        saveTaskTOLocalStorage();
+      }
+      //删除任务和复选框状态变化
+      listBox.addEventListener("click", (e) => {
+        if (e.target.matches(".uil-trash-alt")) {
+          const listItem = e.target.closest("li");
+          const checkBox = listItem.querySelector(".check");
+          if (!checkBox.checked) count--;
+          totalcount--;
+          listItem.remove();
+          updatePendingCount();
+          updateEmptyState();
+          saveTaskTOLocalStorage();
+        }
+      });
+      clearBtn.addEventListener("click", () => {
+        listBox.innerHTML = "";
+        count = 0;
+        totalcount = 0;
+        updatePendingCount();
+        updateEmptyState();
+        localStorage.removeItem("todoTasks");
+      });
+
+      function saveTaskTOLocalStorage() {
+        const tasks = [];
+        document.querySelectorAll(".listbox li").forEach((li) => {
+          const text = li.querySelector("p").textContent;
+          const completed = li.querySelector(".check").checked;
+          tasks.push({ text, completed });
+        });
+        localStorage.setItem("todoTasks", JSON.stringify(tasks));
+        localStorage.setItem("pendingCount", count);
+      }
+
+      function loadTaskFromLocalStorage() {
+        const savedTasks = localStorage.getItem("todoTasks");
+        const savedCount = localStorage.getItem("pendingCount");
+        if (savedTasks) {
+          const tasks = JSON.parse(savedTasks);
+
+          tasks.forEach((task) => {
+            const listItem = document.createElement("li");
+            listBox.appendChild(listItem);
+            listItem += `
+              <span><label>
+                <input type="checkbox" class="check" ${
+                  task.completed ? "checked" : ""
+                }>
+                <span class="done"><i class="uil uil-check"></i></span>
+                <p>${task.text}</p>
+                </label></span><i class="uil uil-trash-alt"></i>
+            `;
+            const checkBox = listItem.querySelector(".check");
+            checkBox.addEventListener("change", function () {
+              if (this.checked) count--;
+              else count++;
+              updatePendingCount();
+              saveTaskTOLocalStorage();
+            });
+            if (!task.completed) count++;
+            totalcount++;
+          });
+          updatePendingCount();
+          updateEmptyState();
+        }
+        if (savedCount !== null) {
+          count = parseInt(savedCount);
+          updatePendingCount();
+        }
+      }
+    </script>
   </body>
-  <script>
-    const textBox = document.querySelector("#textbox");
-    const addBtn = document.querySelector(".addbtn");
-    const listBox = document.querySelector(".listbox");
-
-    textBox.addEventListener("keyup", () => {
-      if (textBox.value.length != 0) {
-        addBtn.classList.add("active");
-      } else {
-        addBtn.classList.remove("active");
-      }
-    });
-
-    addBtn.addEventListener(`click`, () => {
-      if (textBox.value.length != 0) {
-        createList();
-        addBtn.classList.remove("active");
-      }
-    });
-
-    function createList() {
-      var listItem = document.createElement("li");
-      listBox.appendChild(listItem);
-      listItem.innerHTML += `<span><label>
-            <input type="checkbox" id="check">
-            <span class="done"><i class="uil uil-check"></i></span>
-            <p>${textBox.value}</p>
-            </label></span><i class="uil uil-trash-alt"></i>`;
-      textBox.value = "";
-    }
-    listBox.addEventListener("click", (e) => {
-      if (e.target.matches(".uil-trash-alt")) {
-        e.target.parentElement.remove();
-      }
-    });
-  </script>
 </html>
