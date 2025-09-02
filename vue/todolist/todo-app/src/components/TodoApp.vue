@@ -5,6 +5,7 @@
       :pending-count="pendingCount"
       :total-count="tasks.length"
       @clear-all="clearAllTasks"
+      @select-priority="selectPriority"
     />
     <InputArea @add-task="addTask" />
     <TodoList
@@ -12,6 +13,7 @@
       :tasks="filteredTasks"
       @delete-task="deleteTask"
       @toggle-completed="toggleCompleted"
+      @change-priority="changePriority"
     />
     <EmptyState v-else />
   </div>
@@ -34,10 +36,12 @@ const pendingCount = computed(() => {
 });
 const filteredTasks = computed(() => {
   switch (filter.value) {
-    case "active":
-      return tasks.value.filter((tasks) => !tasks.completed);
-    case "completed":
-      return tasks.value.filter((tasks) => tasks.completed);
+    case "low":
+      return tasks.value.filter((tasks) => tasks.priority === "low");
+    case "medium":
+      return tasks.value.filter((tasks) => tasks.priority === "medium");
+    case "high":
+      return tasks.value.filter((tasks) => tasks.priority === "high");
     default:
       return tasks.value;
   }
@@ -49,6 +53,7 @@ const addTask = (text: string) => {
     text,
     completed: false,
     createdAt: new Date(),
+    priority: "low",
   };
   tasks.value.push(newTask);
   saveTasksToLocalStorage();
@@ -61,6 +66,15 @@ const toggleCompleted = (taskId: number) => {
     saveTasksToLocalStorage();
   }
 };
+
+const changePriority = (taskId: number, newPriority: string) => {
+  let priority = newPriority as FilterType;
+  const task = tasks.value.find((t) => t.id === taskId);
+  if (task) {
+    task.priority = priority;
+    saveTasksToLocalStorage();
+  }
+};
 const deleteTask = (taskId: number) => {
   tasks.value = tasks.value.filter((t) => t.id !== taskId);
   saveTasksToLocalStorage();
@@ -68,6 +82,10 @@ const deleteTask = (taskId: number) => {
 const clearAllTasks = () => {
   tasks.value = [];
   saveTasksToLocalStorage();
+};
+
+const selectPriority = (priority: string) => {
+  filter.value = priority as FilterType;
 };
 
 const saveTasksToLocalStorage = () => {

@@ -6,6 +6,7 @@
       :task="task"
       @delete-task="emit('delete-task', $event)"
       @toggle-completed="emit('toggle-completed', $event)"
+      @change-priority="(taskId, newPriority) => emit('change-priority', taskId, newPriority)"
     />
   </ul>
 </template>
@@ -21,6 +22,7 @@ defineProps<{
 const emit = defineEmits<{
   (e: "delete-task", taskId: number): void;
   (e: "toggle-completed", taskId: number): void;
+  (e: "change-priority", taskId: number, newPriority: string): void;
 }>();
 </script>
 <style scoped></style>

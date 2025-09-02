@@ -3,12 +3,14 @@ export interface TodoItem {
   text: string;
   completed: boolean;
   createdAt: Date;
+  priority: FilterType;
 }
-export type FilterType = "all" | "active" | "completed";
+export type FilterType = "all" | "low" | "medium" | "high";
 
 export interface StoredTodoItem {
   id: number;
   text: string;
   completed: boolean;
-  createdAt: string; // Stored as ISO string
+  createdAt: string; // Stored as ISO string\
+  priority: string;
 }

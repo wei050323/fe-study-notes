@@ -9,6 +9,16 @@
           @change="toggleCompleted"
         />
         <span class="done"><i class="uil uil-check"></i></span>
+        <select
+          name="priority"
+          class="priority"
+          @change="changePriority($event)"
+          :value="task.priority"
+        >
+          <option value="low">low</option>
+          <option value="medium">medium</option>
+          <option value="high">high</option>
+        </select>
         <p :class="{ completed: task.completed }">{{ task.text }}</p>
       </label>
     </span>
@@ -25,10 +35,15 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: "delete-task", taskId: number): void;
   (e: "toggle-completed", taskId: number): void;
+  (e: "change-priority", taskId: number, newPriority: string): void;
 }>();
 
 const toggleCompleted = () => {
   emit("toggle-completed", props.task.id);
+};
+const changePriority = (event: Event) => {
+  const newPriority = (event.target as HTMLSelectElement).value;
+  emit("change-priority", props.task.id, newPriority);
 };
 </script>
 
