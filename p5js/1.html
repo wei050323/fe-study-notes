@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>p5.js Falling Text Wave</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+  </head>
+  <body>
+    <script>
+      let textContent = `Of course. Here is a passage inspired by the evocative line Crabs are peeling my shell, exploring its metaphorical possibilities in English.The thought arrives, unbidden: Crabs are peeling my shell.* It is not a nightmare, but a waking sensation—a quiet, unsettling metaphor for a vulnerability so profound it feels physical.
+
+Imagine it: the hard carapace you present to the world, the carefully constructed armor of composure and routine, is being patiently, methodically dismantled. Not by a single great force, but by a thousand tiny, pinching worries. Each claw represents a nagging anxiety, a forgotten obligation, a small criticism, a pang of longing. They work in unison, not with malice, but with the indifferent efficiency of nature. Click, click, click go the pincers, finding the microscopic fissures in your resolve.
+
+You can feel the layers separating. The smooth, polished exterior that says "I am fine" is being pried away from the raw, tender self beneath. There is a strange duality to it—a horror of being exposed, paired with a perverse sense of relief. The weight of the shell is immense. Perhaps these persistent crabs of the mind are not attackers, but reluctant liberators.
+
+What happens when the shell is gone? The image is one of terrifying softness, of being utterly exposed to the elements of the world. But it is also an image of potential growth. For a creature to grow, it must shed its old confines. This painful, meticulous peeling away, this feeling of being dismantled by a world that seems to move in sideways, pinching motions, might just be the necessary prelude to becoming something new. It is the universe’s awkward, uncomfortable way of telling you that you have outgrown your own skin.`;
+
+      // =============== 参数设置 ===============
+      let canvasW = 600,
+        canvasH = 900;
+      let bgColor = "#f4f4f4";
+      let fontSize = 10,
+        fontColor = "#222";
+      let letterSpace = 0,
+        lineSpace = 0;
+      let marginTop = 20,
+        marginLeft = 10,
+        marginRight = 10,
+        marginBottom = 10;
+
+      // 传播与动画参数
+      let spreadRadius = 15; // 传播半径，增大以检测到邻居
+      let spreadXThreshold = 15; // 横向传播触发距离
+      let attractRate = 0.021; // 插值速率 (x方向回归)
+      let fallSpeedRange = [0.04, 0.08]; // 掉落速度范围
+      let rotateSpeedRange = [0.01, 0.02]; // 旋转速度范围
+      let maxSpreadDepth = 53; // 最大传播层数
+      let scaleTimeRange = [100, 200]; // 缩放动画时间范围 (帧数)
+
+      // ======================================
+
+      let chars = [];
+
+      function setup() {
+        createCanvas(canvasW, canvasH);
+        textSize(fontSize);
+        fill(fontColor);
+        noStroke();
+        textFont("Georgia");
+
+        layoutText();
+
+        // 每隔一段时间触发掉落
+        setInterval(triggerFall, 2500);
+      }
+
+      function draw() {
+        background(bgColor);
+
+        for (let c of chars) {
+          // 动态更新
+          if (c.falling) {
+            // 只有当字符处于掉落状态时才应用重力和旋转
+            c.vy += 0.1; // 模拟重力
+            c.y += c.vy;
+            // 旋转更新
+            c.rotation += c.vr;
+          }
+
+          // 向目标x回归 (这个可以一直应用，让字符在掉落过程中也能回归X轴)
+          c.x += (c.targetX - c.x) * attractRate;
+
+          // 缩放动画
+          if (c.scaleTimer > 0) {
+            c.scaleTimer--;
+            c.scale = lerp(1.2, 1.0, 1 - c.scaleTimer / c.scaleDuration);
+          } else {
+            c.scale = 1.0;
+          }
+
+          push();
+          translate(c.x, c.y);
+          rotate(c.rotation);
+          scale(c.scale);
+          text(c.char, 0, 0);
+          pop();
+        }
+      }
+
+      function layoutText() {
+        chars = [];
+        let x = marginLeft;
+        let y = marginTop + fontSize;
+        let row = 0;
+
+        for (let i = 0; i < textContent.length; i++) {
+          let ch = textContent[i];
+          let w = textWidth(ch) + letterSpace;
+
+          if (x + w > width - marginRight) {
+            x = marginLeft;
+            y += fontSize + lineSpace;
+            row++;
+          }
+          if (y > height - marginBottom) break;
+
+          chars.push({
+            char: ch,
+            x: x,
+            y: y,
+            targetX: x,
+            row: row,
+            vy: 0,
+            vr: 0,
+            rotation: 0,
+            scale: 1,
+            scaleTimer: 0,
+            scaleDuration: 1,
+            falling: false, // 新增：表示字符是否正在掉落
+          });
+
+          x += w;
+        }
+      }
+
+      function triggerFall() {
+        let firstRow = chars.filter((c) => c.row === 0);
+        if (firstRow.length === 0) return;
+
+        let picked = random(firstRow);
+        spreadFall(picked, 0);
+      }
+
+      function spreadFall(center, depth) {
+        if (!center || depth > maxSpreadDepth) return;
+
+        // 赋予掉落属性
+        center.vy = random(fallSpeedRange[0], fallSpeedRange[1]);
+        center.vr = random(rotateSpeedRange[0], rotateSpeedRange[1]);
+        center.scaleTimer = int(random(scaleTimeRange[0], scaleTimeRange[1]));
+        center.scaleDuration = center.scaleTimer;
+        center.falling = true; // 设置为掉落状态
+
+        // 找邻居
+        let neighbors = chars.filter((c) => {
+          let d = dist(c.x, c.y, center.x, center.y);
+          return d < spreadRadius && abs(c.x - center.x) < spreadXThreshold;
+        });
+
+        for (let n of neighbors) {
+          if (n !== center && !n.falling) {
+            // 检查邻居是否已经处于掉落状态
+            spreadFall(n, depth + 1);
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
