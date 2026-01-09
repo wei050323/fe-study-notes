@@ -1,0 +1,26 @@
+/* src/components/Main/response.css */
+.response {
+  flex: 1;
+  width: 900px;
+  margin: 20px auto 0;
+  padding: 0 20px;
+  overflow-y: auto;
+}
+
+.response .bottom-info {
+  background-color: #f0f4f9;
+  border-radius: 10px;
+  padding: 16px 20px;
+  color: #585858;
+  font-size: 17px;
+  line-height: 1.7;
+  width: 100%;
+  text-align: left;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* 细微区分状态的视觉层级（不改变现有结构） */
+.response .bottom-info + .bottom-info {
+  margin-top: 12px;
+}

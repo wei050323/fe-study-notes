@@ -1,0 +1,10 @@
+{
+  "watch": ["dist/js"],
+  "ext": "js",
+  "exec": "node dist/js/app.js",
+  "env": {
+    "MONGO_USER": "3324994191_db_user",
+    "MONGO_PASSWORD": "vNN1YjgQRlvueMQu",
+    "MONGO_DB": "Cluster0"
+  }
+}
