@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_home_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_background"
+    android:padding="@dimen/spacing_16">
+
+    <!-- 年份：居中显示 “2025年 ▼” -->
+    <TextView
+        android:id="@+id/text_year"
+        style="@style/Text.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_24"
+        android:drawableEnd="@android:drawable/arrow_down_float"
+        android:drawablePadding="@dimen/spacing_4"
+        android:text="2025年"
+        android:textColor="@color/coffee_primary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 月份切换：右上角 〈 当前月份 〉，参考设计图 -->
+    <!-- 月份切换：TextView 方案（紧凑、可控） -->
+<LinearLayout
+    android:id="@+id/layout_month_switch"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spacing_8"
+    android:layout_marginEnd="@dimen/spacing_16"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    app:layout_constraintTop_toBottomOf="@id/text_year"
+    app:layout_constraintEnd_toEndOf="parent">
+
+    <!-- 上月 -->
+    <TextView
+        android:id="@+id/text_prev_month"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="◀"
+        android:textColor="@color/coffee_primary"
+        android:textSize="14sp" />
+
+    <!-- 当前月份 -->
+    <TextView
+        android:id="@+id/text_month_label"
+        android:layout_width="44dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:background="#FDFDFD"
+        android:gravity="center"
+        android:text="12月"
+        android:textColor="@color/coffee_primary"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <!-- 下月 -->
+    <TextView
+        android:id="@+id/text_next_month"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="▶"
+        android:textColor="@color/coffee_primary"
+        android:textSize="14sp" />
+
+</LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layout_weekdays"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_16"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="@dimen/spacing_16"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_month_switch">
+
+        <TextView
+            style="@style/Text.Caption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="一" />
+
+        <TextView
+            style="@style/Text.Caption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="二" />
+
+        <TextView
+            style="@style/Text.Caption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="三" />
+
+        <TextView
+            style="@style/Text.Caption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="四" />
+
+        <TextView
+            style="@style/Text.Caption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="五" />
+
+        <TextView
+            style="@style/Text.Caption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="六" />
+
+        <TextView
+            style="@style/Text.Caption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="日" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_calendar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_8"
+        android:layout_marginStart="@dimen/spacing_16"
+        android:layout_marginEnd="@dimen/spacing_16"
+        android:overScrollMode="never"
+        android:paddingTop="@dimen/spacing_8"
+        android:paddingBottom="@dimen/spacing_8"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="7"
+        app:layout_constraintTop_toBottomOf="@id/layout_weekdays"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_today_status"
+        style="@style/Card.Elevated"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_16"
+        app:layout_constraintTop_toBottomOf="@id/recycler_calendar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F2EAE2"
+            android:padding="@dimen/spacing_16">
+
+            <TextView
+                android:id="@+id/text_today_label"
+                style="@style/Text.BodySecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="今日咖啡因" />
+
+            <TextView
+                android:id="@+id/text_today_caffeine_big"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/text_primary"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/text_today_label"
+                app:layout_constraintTop_toBottomOf="@id/text_today_label" />
+
+            <TextView
+                android:id="@+id/text_today_unit"
+                style="@style/Text.BodySecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_4"
+                android:text="mg"
+                app:layout_constraintBottom_toBottomOf="@id/text_today_caffeine_big"
+                app:layout_constraintStart_toEndOf="@id/text_today_caffeine_big" />
+
+            <TextView
+                android:id="@+id/text_today_status"
+                style="@style/Text.BodySecondary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_8"
+                android:text="在安全范围内"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/text_today_label"
+                app:layout_constraintTop_toBottomOf="@id/text_today_caffeine_big" />
+
+            <com.example.drink2.view.CaffeineProgressView
+                android:id="@+id/caffeine_progress"
+                android:layout_width="@dimen/caffeine_progress_size"
+                android:layout_height="@dimen/caffeine_progress_size"
+                android:layout_marginEnd="@dimen/spacing_16"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_stats"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/spacing_8"
+                android:paddingEnd="@dimen/spacing_8"
+                android:text="统计"
+                android:textAllCaps="false"
+                app:icon="@android:drawable/ic_menu_today"
+                app:iconGravity="textStart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/divider_light"
+                app:strokeWidth="1dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_drinks"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/spacing_16"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/card_today_status"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_16"
+        android:contentDescription="添加饮品"
+        app:backgroundTint="@color/coffee_primary"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:tint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

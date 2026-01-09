@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_background"
+    android:padding="@dimen/spacing_16">
+
+    <TextView
+        android:id="@+id/text_settings_title"
+        style="@style/Text.TitleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="设置"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_about"
+        style="@style/Card.Elevated"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_24"
+        app:layout_constraintTop_toBottomOf="@id/text_settings_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_16">
+
+            <TextView
+                android:id="@+id/text_about"
+                style="@style/Text.Body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="关于应用"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_version"
+                style="@style/Text.BodySecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="版本 1.0.0"
+                android:layout_marginTop="@dimen/spacing_8"
+                app:layout_constraintTop_toBottomOf="@id/text_about"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- 摄入上限设置 -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_limits"
+        style="@style/Card.Elevated"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_16"
+        app:layout_constraintTop_toBottomOf="@id/card_about"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_16">
+
+            <TextView
+                android:id="@+id/text_limits_title"
+                style="@style/Text.Body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="摄入上限设置"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- 今日咖啡因上限 -->
+            <TextView
+                android:id="@+id/label_daily_caffeine_limit"
+                style="@style/Text.BodySecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_12"
+                android:text="今日咖啡因上限 (mg)"
+                app:layout_constraintTop_toBottomOf="@id/text_limits_title"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/edit_daily_caffeine_limit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_8"
+                android:inputType="number"
+                android:hint="例如 400"
+                app:layout_constraintTop_toBottomOf="@id/label_daily_caffeine_limit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- 统计页：热量上限 -->
+            <TextView
+                android:id="@+id/label_stats_calorie_limit"
+                style="@style/Text.BodySecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_16"
+                android:text="统计页每日热量上限 (kcal)"
+                app:layout_constraintTop_toBottomOf="@id/edit_daily_caffeine_limit"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/edit_stats_calorie_limit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_8"
+                android:inputType="number"
+                android:hint="例如 2000"
+                app:layout_constraintTop_toBottomOf="@id/label_stats_calorie_limit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- 统计页：糖分上限 -->
+            <TextView
+                android:id="@+id/label_stats_sugar_limit"
+                style="@style/Text.BodySecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_16"
+                android:text="统计页每日糖分上限 (g)"
+                app:layout_constraintTop_toBottomOf="@id/edit_stats_calorie_limit"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/edit_stats_sugar_limit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_8"
+                android:inputType="number"
+                android:hint="例如 50"
+                app:layout_constraintTop_toBottomOf="@id/label_stats_sugar_limit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- 统计页：咖啡因上限 -->
+            <TextView
+                android:id="@+id/label_stats_caffeine_limit"
+                style="@style/Text.BodySecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_16"
+                android:text="统计页每日咖啡因上限 (mg)"
+                app:layout_constraintTop_toBottomOf="@id/edit_stats_sugar_limit"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/edit_stats_caffeine_limit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_8"
+                android:inputType="number"
+                android:hint="例如 400"
+                app:layout_constraintTop_toBottomOf="@id/label_stats_caffeine_limit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_save_limits"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_24"
+                android:text="保存"
+                android:textAllCaps="false"
+                app:layout_constraintTop_toBottomOf="@id/edit_stats_caffeine_limit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

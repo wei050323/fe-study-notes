@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主题主色与背景 -->
+    <color name="milk_tea_primary">#EEDFCC</color>
+    <color name="coffee_primary">#6F4E37</color>
+    <color name="page_background">#FFFFFF</color>
+    <color name="card_background">#FBFBFB</color>
+
+    <!-- 文本与状态色 -->
+    <color name="text_primary">#1F2D3D</color>
+    <color name="text_secondary">#455A6B</color>
+    <color name="warning_red">#EF4444</color>
+    <color name="success_green">#16A34A</color>
+
+    <!-- 其他通用颜色 -->
+    <color name="divider_light">#FFE0E0E0</color>
+    <color name="chip_bg">#FFF5F5F5</color>
+    <color name="transparent">#00000000</color>
+
+    <!-- 保留基础色 -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
